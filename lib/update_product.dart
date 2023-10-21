@@ -13,6 +13,9 @@ import 'main_dashboard.dart';
 import 'package:http/http.dart' as http;
 
 
+
+
+
 class ItemOption {
   String price;
   String quantity;
@@ -60,7 +63,19 @@ class _PriceQuantitySpinnerRowState extends State<PriceQuantitySpinnerRow> {
     unit: 'kg',
     offerPrice: '',
   );
-  List<String> dropDownItems = ['kg', 'litre', 'unit', 'packet'];
+  // List<String> dropDownItems = ['kg', 'litre', 'unit', 'packet'];
+  List<String> dropDownItems = [
+  "kg",
+  "litre",
+  "piece",
+  "packet",
+  "box",
+  "bottle",
+  "can",
+  "bag",
+  "sack",
+  "tin",
+  "other",];
 
 
   void addOption() {
@@ -77,6 +92,8 @@ class _PriceQuantitySpinnerRowState extends State<PriceQuantitySpinnerRow> {
   bool _validate4 = false;
   bool _validate5 = false;
   bool _validate6 = false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -318,7 +335,19 @@ late List dummyProductList;
   ];
 
   String units = 'kg';
-  List<String> dropDownItems = ['kg', 'litre', 'Unit', 'Packet'];
+  // List<String> dropDownItems = ['kg', 'litre', 'Unit', 'Packet'];
+  List<String> dropDownItems = [
+    "kg",
+    "litre",
+    "piece",
+    "packet",
+    "box",
+    "bottle",
+    "can",
+    "bag",
+    "sack",
+    "tin",
+    "other",];
   // [
   //   {
   //     "quantity": "1",
@@ -379,6 +408,9 @@ late List dummyProductList;
   }
 
 
+  final _formkey = GlobalKey<FormState>();
+
+
   @override
   Widget build(BuildContext context) {
     dummyProductList = widget.quantityPricing;
@@ -432,535 +464,650 @@ late List dummyProductList;
 
         body: Container(
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+            child: Form(
+              key: _formkey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
 
-                Container(
-                  height: 35,
+                  Container(
+                    height: 35,
 
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue.shade900,
-                      borderRadius: BorderRadius.only(bottomRight: Radius.circular(30),bottomLeft: Radius.circular(30))
-                  ),
-                  child: Center(child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 25,
-                        width: 73,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.all(Radius.circular(6))
-                        ),
-                        child: Center(child: Text('Update',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
-                      ),
-
-                      //Text('Add Product',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15,fontFamily: 'Poppins', ),),
-                    ],
-                  )),
-                ),
-
-                Container(
-
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    decoration: BoxDecoration(
+                        color: Colors.lightBlue.shade900,
+                        borderRadius: BorderRadius.only(bottomRight: Radius.circular(30),bottomLeft: Radius.circular(30))
+                    ),
+                    child: Center(child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 10),
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                CupertinoSwitch(
-                                  activeColor: Colors.red,
-                                  value: _switchValue,
-                                  onChanged: (bool value) {
-                                    setState(() {
-                                      s = value == false ? 'In stock' : 'Out of stock';
-                                      _switchValue = value;
-
-                                    });
-                                    stockUpdate();
-                                  },
-                                ),
-                                Container(
-
-                                  margin: EdgeInsets.only(left: 0),
-                                  child: Center(
-                                    child: Text(s,
-                                        style: TextStyle(
-                                            color: Colors.green.shade900,
-                                            fontSize: 18,
-                                            fontFamily: 'Poppins',
-                                            fontWeight: FontWeight.bold
-                                        )),
-                                  ),
-                                ),
-
-                              ],
-                            ),
+                          height: 25,
+                          width: 73,
+                          decoration: BoxDecoration(
+                              color: Colors.black,
+                              borderRadius: BorderRadius.all(Radius.circular(6))
                           ),
+                          child: Center(child: Text('Update',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
                         ),
 
+                        //Text('Add Product',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15,fontFamily: 'Poppins', ),),
+                      ],
+                    )),
+                  ),
 
-                        Container(
-                          margin: EdgeInsets.only(right: 10, left: 15, top: 20),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                child: Text(
-                                  'Update',
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                  Container(
 
-                        Container(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
                             margin: EdgeInsets.only(left: 20,right: 20,top: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text("Product Image:",textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold)),
-
-                                Container(
-                                  height: 150,
-                                  //   child: Padding(
-                                  //     padding: const EdgeInsets.all(8.0),
-                                  //     child: GridView.builder(
-                                  //         scrollDirection: Axis.horizontal,
-                                  //         itemCount: widget.imageFileList!.length,
-                                  //         gridDelegate:
-                                  //         SliverGridDelegateWithFixedCrossAxisCount(
-                                  //             crossAxisCount: 1,
-                                  //             mainAxisSpacing: 5),
-                                  //         itemBuilder:
-                                  //             (BuildContext context, int index) {
-                                  //           return Image.file(
-                                  //             File(widget.imageFileList![index].path),
-                                  //             fit: BoxFit.cover,
-                                  //           );
-                                  //         }),
-                                  //   ),
-                                ),
-                              ],
-                            )),
-                        InkWell(
-                          onTap: () {
-                            saveProductData(pName, pSCategory2, description, token,id, widget.pid, dummyProductList, false);
-                            Navigator.push(
-
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Category(
-                                  productName: pName.text,
-                                  productDescription: description.text,
-                                  update:true, stockIO: widget.stockIO, stockTF: widget.stockTF,
-                                    dummyProductList: dummyProductList,
-                                  pid:widget.pid
-                                ), //changed
-                              ),
-                            );
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                            child: Text(
-                              'Choose Category >',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Text(
-                            'Category',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: TextField(
-                            controller: pCategory,
-                            style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.teal.shade900
-                                  )
-                              ),
-
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Text(
-                            'SubCategory1',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: TextField(
-                            controller: pSCategory1,
-                            style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.teal.shade900
-                                  )
-                              ),
-
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Text(
-                            'SubCategory2',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: TextField(
-                            controller: pSCategory2,
-                            style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.teal.shade900
-                                  )
-                              ),
-
-                            ),
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 20),
-                          child: Text(
-                            'Product Name',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: TextField(
-                            controller: pName,
-                            style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.teal.shade900
-                                  )
-                              ),
-
-                            ),
-                          ),
-                        ),
-
-
-
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 25),
-                          child: Text(
-                            'Product Type (Veg/Non-veg,/in case if applicable)',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20),
-                          child: DropdownButton(
-                            value: pType,
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            items: items2.map((String items2) {
-                              return DropdownMenuItem(
-                                value: items2,
-                                child: Text(items2),
-                              );
-                            }).toList(),
-                            onChanged: (String? newValue){
-                              setState(() {
-                                pType = newValue!;
-                              });
-                            },
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 25),
-                          child: Text(
-                            'Product Description',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,bottom: 10),
-                          child: TextField(
-                            controller: description,
-                            style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
-                            decoration: InputDecoration(
-                              focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.teal.shade900
-                                  )
-                              ),
-                            ),
-
-                          ),
-                        ),
-
-                        Container(
-                          margin: EdgeInsets.only(left: 20,right: 20,top: 25),
-                          child: Text(
-                            'Product Quantity/Price',
-                            style: TextStyle(
-                              fontSize: 13,
-                              fontFamily: 'Poppins',
-                              color: Colors.black87,
-                            ),
-                          ),
-                        ),
-                        Container(
-                          height: 188.0*(data),
-                          child: ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: dummyProductList.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final product = dummyProductList[index];
-                              // final productUnit = product["unit"];
-                              return Column(
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
+                                  CupertinoSwitch(
+                                    activeColor: Colors.red,
+                                    value: _switchValue,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        s = value == false ? 'In stock' : 'Out of stock';
+                                        _switchValue = value;
+
+                                      });
+                                      stockUpdate();
+                                    },
+                                  ),
                                   Container(
-                                    margin: EdgeInsets.only(left: 20,right: 20 ),
-                                    child: Text(
-                                      'Variant ${(index+1).toString()}',
-                                      style: TextStyle(
-                                        fontSize: 13,
+
+                                    margin: EdgeInsets.only(left: 0),
+                                    child: Center(
+                                      child: Text(s,
+                                          style: TextStyle(
+                                              color: Colors.green.shade900,
+                                              fontSize: 18,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.bold
+                                          )),
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            ),
+                          ),
+
+
+                          Container(
+                            margin: EdgeInsets.only(right: 10, left: 15, top: 20),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  child: Text(
+                                    'Update',
+                                    style: TextStyle(
+                                        fontSize: 28,
                                         fontFamily: 'Poppins',
                                         color: Colors.black87,
-                                      ),
+                                        fontWeight: FontWeight.bold
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.all(15),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                height: 60,
-                                                padding: EdgeInsets.all(16),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: TextFormField(
-                                                  controller:
-                                                  TextEditingController(text: product.quantity),
-                                                  // onChanged: (value) => option.quantity = value,
-                                                  onChanged: (value){
-                                                    itemOptions[index].quantity = value;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Quantity',
-                                                    border: InputBorder.none,
+                                ),
+                              ],
+                            ),
+                          ),
 
-                                                  ),
-                                                  style: TextStyle(
-                                                    color: Colors.black.withOpacity(1.0),
-                                                    fontSize: 16,
-                                                    fontFamily: 'Urbanist',
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 16),
-                                            Container(
-                                              height: 60,
-                                              padding: EdgeInsets.all(16),
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.black,
-                                                ),
-                                                borderRadius: BorderRadius.circular(12),
-                                              ),
-                                              child: DropdownButton<String>(
-                                                value: product.unit,
-                                                onChanged: (String? value) {
-                                                  setState(() {
-                                                    product.unit  = value!;
-                                                  });
-                                                },
-                                                items: dropDownItems.map((String value) {
-                                                  return DropdownMenuItem<String>(
-                                                    value: value,
-                                                    child: Text(
-                                                      value,
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 16,
-                                                        fontFamily: 'Urbanist',
-                                                        fontWeight: FontWeight.w400,
-                                                      ),
-                                                    ),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 8,
-                                        ),
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
-                                                height: 60,
-                                                padding: EdgeInsets.all(16),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: TextFormField(
-                                                  controller:
-                                                  TextEditingController(text: product.mrpPrice.toString()),
-                                                  onChanged: (value){
-                                                    itemOptions[index].price = value;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Price (In Rs.)',
-                                                    border: InputBorder.none,
+                          Container(
+                              margin: EdgeInsets.only(left: 20,right: 20,top: 10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text("Product Image:",textScaleFactor: 1.2,style: TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*",style: TextStyle(color: Colors.red)),
+                                    ],
+                                  ),
 
-                                                  ),
-                                                  style: TextStyle(
-                                                    color: Colors.black.withOpacity(1.0),
-                                                    fontSize: 16,
-                                                    fontFamily: 'Urbanist',
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 16),
-                                            Expanded(
-                                              child: Container(
-                                                height: 60,
-                                                padding: EdgeInsets.all(16),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                    width: 1,
-                                                    color: Colors.black,
-                                                  ),
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: TextFormField(
-                                                  controller:
-                                                  TextEditingController(text: product.offerPrice.toString()),
-                                                  onChanged: (value){
-                                                    itemOptions[index].offerPrice = value;
-                                                  },
-                                                  decoration: InputDecoration(
-                                                    hintText: 'Offer Price',
-                                                    border: InputBorder.none,
 
-                                                  ),
-                                                  style: TextStyle(
-                                                    color: Colors.black.withOpacity(1.0),
-                                                    fontSize: 16,
-                                                    fontFamily: 'Urbanist',
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
+                                  Container(
+                                    height: 150,
+                                    //   child: Padding(
+                                    //     padding: const EdgeInsets.all(8.0),
+                                    //     child: GridView.builder(
+                                    //         scrollDirection: Axis.horizontal,
+                                    //         itemCount: widget.imageFileList!.length,
+                                    //         gridDelegate:
+                                    //         SliverGridDelegateWithFixedCrossAxisCount(
+                                    //             crossAxisCount: 1,
+                                    //             mainAxisSpacing: 5),
+                                    //         itemBuilder:
+                                    //             (BuildContext context, int index) {
+                                    //           return Image.file(
+                                    //             File(widget.imageFileList![index].path),
+                                    //             fit: BoxFit.cover,
+                                    //           );
+                                    //         }),
+                                    //   ),
                                   ),
                                 ],
+                              )),
+                          InkWell(
+                            onTap: () {
+                              saveProductData(pName, pSCategory2, description, token,id, widget.pid, dummyProductList, false);
+                              Navigator.push(
+
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Category(
+                                    productName: pName.text,
+                                    productDescription: description.text,
+                                    update:true, stockIO: widget.stockIO, stockTF: widget.stockTF,
+                                      dummyProductList: dummyProductList,
+                                    pid:widget.pid
+                                  ), //changed
+                                ),
                               );
                             },
-                          ),
-                        ),
-
-                        PriceQuantitySpinnerRow(
-                            options: itemOptions,
-                            onOptionAdded: handleOptionAdded,
-                            updateInitialValue:
-                                (pControllers, oController, qController) {
-                            }),
-
-
-                        Container(
-                          width: double.maxFinite,
-                          margin: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 30),
-                          child: ElevatedButton(
-                            onPressed: (){
-                              saveProductData(pName, pSCategory2, description, token,id, widget.pid, dummyProductList, true);
-
-                          },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.lightBlue, // Set the background color to white
+                            child: Container(
+                              margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+                              child: Text(
+                                'Choose Category >',
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
-                            child: const Text('Save And Update',style: TextStyle(color: Colors.white,fontSize: 15),),
                           ),
-                          color: Colors.lightBlue.shade500,
-                        )
-                      ],
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 20),
+
+                           child: Row(
+                              children: [
+                                Text(
+                                  'Category',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            child: TextFormField(
+                              controller: pCategory,
+                              style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.teal.shade900
+                                    )
+                                ),
+
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState?.validate();
+                                });
+                              },
+
+                              validator: (value){
+                                if(value!.isEmpty || value.length < 2){
+                                  return 'Please enter Category';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 20),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'SubCategory1',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            child: TextFormField(
+                              controller: pSCategory1,
+                              style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.teal.shade900
+                                    )
+                                ),
+
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState?.validate();
+                                });
+                              },
+
+                              validator: (value){
+                                if(value!.isEmpty || value.length < 2){
+                                  return 'Please enter SubCategory1';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 20),
+
+                            child: Row(
+                              children: [
+                                Text(
+                                  'SubCategory2',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            child: TextFormField(
+                              controller: pSCategory2,
+                              style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.teal.shade900
+                                    )
+                                ),
+
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState?.validate();
+                                });
+                              },
+
+                              validator: (value){
+                                if(value!.isEmpty || value.length < 2){
+                                  return 'Please enter SubCategory2';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 20),
+
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Product Name',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            child: TextFormField(
+                              controller: pName,
+                              style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.teal.shade900
+                                    )
+                                ),
+
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState?.validate();
+                                });
+                              },
+
+                              validator: (value){
+                                if(value!.isEmpty || value.length < 2){
+                                  return 'Please enter Product Name';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+
+
+
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 25),
+
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Product Type (Veg/Non-veg,/in case if applicable)',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20),
+                            child: DropdownButton(
+                              value: pType,
+                              icon: const Icon(Icons.keyboard_arrow_down),
+                              items: items2.map((String items2) {
+                                return DropdownMenuItem(
+                                  value: items2,
+                                  child: Text(items2),
+                                );
+                              }).toList(),
+                              onChanged: (String? newValue){
+                                setState(() {
+                                  pType = newValue!;
+                                });
+                              },
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 25),
+
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Product Description',
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    fontFamily: 'Poppins',
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,bottom: 10),
+                            child: TextFormField(
+                              controller: description,
+                              style: TextStyle(fontFamily: 'Poppins',fontSize: 18),
+                              decoration: InputDecoration(
+                                focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.teal.shade900
+                                    )
+                                ),
+                              ),
+                              onChanged: (value){
+                                setState(() {
+                                  _formkey.currentState?.validate();
+                                });
+                              },
+
+                              validator: (value){
+                                if(value!.isEmpty || value.length < 2){
+                                  return 'Please enter Product Description';
+                                }
+                                return null;
+                              },
+
+                            ),
+                          ),
+
+                          Container(
+                            margin: EdgeInsets.only(left: 20,right: 20,top: 25),
+
+                            child: Row(
+                              children: [
+                             Text(
+                             'Product Quantity/Price',
+                               style: TextStyle(
+                               fontSize: 13,
+                               fontFamily: 'Poppins',
+                               color: Colors.black87,
+                               ),
+                             ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            height: 188.0*(data),
+                            child: ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              itemCount: dummyProductList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                final product = dummyProductList[index];
+                                // final productUnit = product["unit"];
+                                return Column(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 20,right: 20 ),
+                                      child: Text(
+                                        'Variant ${(index+1).toString()}',
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontFamily: 'Poppins',
+                                          color: Colors.black87,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.all(15),
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  height: 60,
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      width: 1,
+                                                      color: Colors.black,
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                    TextEditingController(text: product.quantity),
+                                                    // onChanged: (value) => option.quantity = value,
+                                                    onChanged: (value){
+                                                      itemOptions[index].quantity = value;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      hintText: 'Quantity',
+                                                      border: InputBorder.none,
+
+                                                    ),
+                                                    style: TextStyle(
+                                                      color: Colors.black.withOpacity(1.0),
+                                                      fontSize: 16,
+                                                      fontFamily: 'Urbanist',
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 16),
+                                              Container(
+                                                height: 60,
+                                                padding: EdgeInsets.all(16),
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                    width: 1,
+                                                    color: Colors.black,
+                                                  ),
+                                                  borderRadius: BorderRadius.circular(12),
+                                                ),
+                                                child: DropdownButton<String>(
+                                                  value: product.unit,
+                                                  onChanged: (String? value) {
+                                                    setState(() {
+                                                      product.unit  = value!;
+                                                    });
+                                                  },
+                                                  items: dropDownItems.map((String value) {
+                                                    return DropdownMenuItem<String>(
+                                                      value: value,
+                                                      child: Text(
+                                                        value,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          fontFamily: 'Urbanist',
+                                                          fontWeight: FontWeight.w400,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }).toList(),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 8,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: Container(
+                                                  height: 60,
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      width: 1,
+                                                      color: Colors.black,
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                    TextEditingController(text: product.mrpPrice.toString()),
+                                                    onChanged: (value){
+                                                      itemOptions[index].price = value;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      hintText: 'Price (In Rs.)',
+                                                      border: InputBorder.none,
+
+                                                    ),
+                                                    style: TextStyle(
+                                                      color: Colors.black.withOpacity(1.0),
+                                                      fontSize: 16,
+                                                      fontFamily: 'Urbanist',
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(width: 16),
+                                              Expanded(
+                                                child: Container(
+                                                  height: 60,
+                                                  padding: EdgeInsets.all(16),
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      width: 1,
+                                                      color: Colors.black,
+                                                    ),
+                                                    borderRadius: BorderRadius.circular(12),
+                                                  ),
+                                                  child: TextFormField(
+                                                    controller:
+                                                    TextEditingController(text: product.offerPrice.toString()),
+                                                    onChanged: (value){
+                                                      itemOptions[index].offerPrice = value;
+                                                    },
+                                                    decoration: InputDecoration(
+                                                      hintText: 'Offer Price',
+                                                      border: InputBorder.none,
+
+                                                    ),
+                                                    style: TextStyle(
+                                                      color: Colors.black.withOpacity(1.0),
+                                                      fontSize: 16,
+                                                      fontFamily: 'Urbanist',
+                                                      fontWeight: FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+
+                          PriceQuantitySpinnerRow(
+                              options: itemOptions,
+                              onOptionAdded: handleOptionAdded,
+                              updateInitialValue:
+                                  (pControllers, oController, qController) {
+                              }),
+
+
+                          Container(
+                            width: double.maxFinite,
+                            margin: const EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 30),
+                            child: ElevatedButton(
+                              onPressed: (){
+
+                                if(_formkey.currentState!.validate()){
+                                  print('success');
+                                  saveProductData(pName, pSCategory2, description, token,id, widget.pid, dummyProductList, true);
+                                }
+
+
+                            },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.lightBlue, // Set the background color to white
+                              ),
+                              child: const Text('Save And Update',style: TextStyle(color: Colors.white,fontSize: 15),),
+                            ),
+                            color: Colors.lightBlue.shade500,
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

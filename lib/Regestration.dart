@@ -565,7 +565,7 @@ class _SellerRegistrationPageState extends State<Regest> {
                       ),
                       onPressed: (){
 
-                        if(_formkey.currentState!.validate() || true){
+                        if(_formkey.currentState!.validate() || true ){
                             print('success');
                             postPersonalDetails();
                         }
@@ -590,50 +590,50 @@ class _SellerRegistrationPageState extends State<Regest> {
   }
 
 
-  Future<LocationPermission> _requestLocationPermission() async {
-    LocationPermission permission = await Geolocator.requestPermission();
-    return permission;
-  }
-
-  void _showLocationServiceDisabledDialog(BuildContext context) async {
-    // ... (existing code)
-    showDialog(
-      context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: const Text('Location Services Disabled'),
-            content: const Text(
-                'Please enable location services to use this feature.'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  // Open location settings to allow the user to enable location services
-                  bool isOpened = await Geolocator.openLocationSettings();
-                  dia = true;
-                  if (isOpened) {
-                    Navigator.of(context).pop(); // Close the dialog
-                  } else {
-                    // Location settings couldn't be opened
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: const Text(
-                            'Unable to open location settings. Please enable location services manually.'),
-                      ),
-                    );
-                  }
-                },
-                child: const Text('Enable Location'),
-              ),
-            ],
-          ),
-    );
-  }
+  // Future<LocationPermission> _requestLocationPermission() async {
+  //   LocationPermission permission = await Geolocator.requestPermission();
+  //   return permission;
+  // }
+  //
+  // void _showLocationServiceDisabledDialog(BuildContext context) async {
+  //   // ... (existing code)
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) =>
+  //         AlertDialog(
+  //           title: const Text('Location Services Disabled'),
+  //           content: const Text(
+  //               'Please enable location services to use this feature.'),
+  //           actions: [
+  //             ElevatedButton(
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(); // Close the dialog
+  //               },
+  //               child: const Text('Cancel'),
+  //             ),
+  //             ElevatedButton(
+  //               onPressed: () async {
+  //                 // Open location settings to allow the user to enable location services
+  //                 bool isOpened = await Geolocator.openLocationSettings();
+  //                 dia = true;
+  //                 if (isOpened) {
+  //                   Navigator.of(context).pop(); // Close the dialog
+  //                 } else {
+  //                   // Location settings couldn't be opened
+  //                   ScaffoldMessenger.of(context).showSnackBar(
+  //                     SnackBar(
+  //                       content: const Text(
+  //                           'Unable to open location settings. Please enable location services manually.'),
+  //                     ),
+  //                   );
+  //                 }
+  //               },
+  //               child: const Text('Enable Location'),
+  //             ),
+  //           ],
+  //         ),
+  //   );
+  // }
 
 
 }

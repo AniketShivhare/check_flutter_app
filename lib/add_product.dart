@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:e_commerce/review_listed.dart';
+import 'package:e_commerce/seller_profile_option.dart';
 // import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'categoryList.dart';
@@ -307,6 +308,8 @@ class _AddProductState extends State<AddProduct> {
     valueUpdate(widget.productName, widget.productDescription);
   }
 
+  final _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var items2 = [
@@ -336,11 +339,26 @@ class _AddProductState extends State<AddProduct> {
                   Icons.add_circle_outline,
                   color: Colors.white,
                 )),
-            CircleAvatar(
-              backgroundColor: Colors.red.shade100,
-              backgroundImage: AssetImage('assets/images/avatar.png'),
-              radius: 18,
-            ),
+
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return profileOptions(); // Replace NewScreen with the screen you want to navigate to
+                    },
+                  ),
+                );
+                // Handle the click or tap action here
+                // For example, you can navigate to a new screen or perform some action.
+              },
+              child:CircleAvatar(
+                backgroundColor: Colors.red.shade100,
+                backgroundImage: AssetImage('assets/images/avatar.png'),
+                radius: 18,
+              ),),
+
           ],
         ),
         centerTitle: true,
@@ -417,310 +435,390 @@ class _AddProductState extends State<AddProduct> {
               ),
               Container(
                 child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(right: 10, left: 15, top: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Text(
-                                'Add Product',
+                  child: Form(
+                    key: _formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 10, left: 15, top: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Container(
+                                child: Text(
+                                  'Add Product',
+                                  style: TextStyle(
+                                      fontSize: 28,
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 15, right: 20, top: 5),
+                          child: Text(
+                            'Fill your product details correctly',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontFamily: 'Poppins',
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Category(
+                                  productName: productName,
+                                  productDescription: productDescription,
+                                  update:false, stockIO: '', stockTF: false, dummyProductList: [], pid: '',
+                                ), //changed
+                              ),
+                            );
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+
+                            child: Row(
+                              children: [
+                                Text(
+                                  'Choose Category >',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text("*",style: TextStyle(color: Colors.red)),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Container(
+                            margin: EdgeInsets.only(left: 20, right: 20, top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Product Category:",
+                                    textScaleFactor: 1.0,
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.bold)),
+                                Text(widget.category, textScaleFactor: 1.5),
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(left: 20, right: 20, top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Product SubCategory1:",
+                                    textScaleFactor: 1.0,
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.bold)),
+                                Text(widget.subCategory1, textScaleFactor: 1.5),
+                              ],
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(left: 20, right: 20, top: 15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Product SubCategory2:",
+                                    textScaleFactor: 1.0,
+                                    style:
+                                    TextStyle(fontWeight: FontWeight.bold)),
+                                Text(widget.subCategory2, textScaleFactor: 1.5),
+                              ],
+                            )),
+                        Container(
+                          margin: EdgeInsets.only(right: 20, top: 20, left: 20),
+
+                          child: Row(
+                            children: [
+                              Text(
+                                'Choose Images',
                                 style: TextStyle(
-                                    fontSize: 28,
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold),
+                                  fontSize: 18,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text("*",style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: InkWell(
+                                onTap: () {
+                                  selectImages();
+                                },
+                                child: Container(
+                                    height: 100,
+                                    width: 100,
+                                    margin: EdgeInsets.only(
+                                        left: 20, right: 20, top: 10, bottom: 5),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(13)),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.camera_alt),
+                                        Icon(Icons.add_circle_outline),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                height: 150,
+                                width: 150,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GridView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: imageFileList!.length,
+                                      gridDelegate:
+                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 1,
+                                          mainAxisSpacing: 5),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        return Image.file(
+                                          File(imageFileList![index].path),
+                                          fit: BoxFit.cover,
+                                        );
+                                      }),
+                                ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 15, right: 20, top: 5),
-                        child: Text(
-                          'Fill your product details correctly',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Category(
-                                productName: productName,
-                                productDescription: productDescription,
-                                update:false, stockIO: '', stockTF: false, dummyProductList: [], pid: '',
-                              ), //changed
-                            ),
-                          );
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                          child: Text(
-                            'Choose Category >',
-                            style: TextStyle(
-                                fontSize: 25,
-                                fontFamily: 'Poppins',
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 25),
+
+                          child: Row(
                             children: [
-                              Text("Product Category:",
-                                  textScaleFactor: 1.0,
-                                  style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
-                              Text(widget.category, textScaleFactor: 1.5),
-                            ],
-                          )),
-                      Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Product SubCategory1:",
-                                  textScaleFactor: 1.0,
-                                  style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
-                              Text(widget.subCategory1, textScaleFactor: 1.5),
-                            ],
-                          )),
-                      Container(
-                          margin: EdgeInsets.only(left: 20, right: 20, top: 15),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Product SubCategory2:",
-                                  textScaleFactor: 1.0,
-                                  style:
-                                  TextStyle(fontWeight: FontWeight.bold)),
-                              Text(widget.subCategory2, textScaleFactor: 1.5),
-                            ],
-                          )),
-                      Container(
-                        margin: EdgeInsets.only(right: 20, top: 20, left: 20),
-                        child: Text(
-                          'Choose Images',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: InkWell(
-                              onTap: () {
-                                selectImages();
-                              },
-                              child: Container(
-                                  height: 100,
-                                  width: 100,
-                                  margin: EdgeInsets.only(
-                                      left: 20, right: 20, top: 10, bottom: 5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius:
-                                    BorderRadius.all(Radius.circular(13)),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.camera_alt),
-                                      Icon(Icons.add_circle_outline),
-                                    ],
-                                  )),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: GridView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: imageFileList!.length,
-                                    gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
-                                        crossAxisCount: 1,
-                                        mainAxisSpacing: 5),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      return Image.file(
-                                        File(imageFileList![index].path),
-                                        fit: BoxFit.cover,
-                                      );
-                                    }),
+                              Text(
+                                'Product Type (Veg/Non-veg,/in case if applicable)',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87,
+                                ),
                               ),
+                              Text("*",style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: DropdownButton(
+                            value: productType,
+                            icon: const Icon(Icons.keyboard_arrow_down),
+                            items: items2.map((String items2) {
+                              return DropdownMenuItem(
+                                value: items2,
+                                child: Text(items2),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                productType = newValue!;
+                              });
+                            },
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 20),
+
+                          child: Row(
+                            children: [
+                              Text(
+                                'Product Name',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text("*",style: TextStyle(color: Colors.red)),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextFormField(
+                            onChanged: (value) {
+                              productName = value;
+                              // setState(() {
+                              //   _formkey.currentState?.validate();
+                              // });
+                            },
+                            // validator: (productName){
+                            //   if(productName!.isEmpty || productName.length < 2){
+                            //     return 'Please enter Product Name';
+                            //   }
+                            //   return null;
+                            // },
+                            controller: productNameContt,
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
+                            decoration: InputDecoration(
+                              errorText:
+                              _validate1 ? 'Value Can\'t Be Empty' : null,
+                              hintText: 'Name of item (Ex-Oil)',
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                  BorderSide(color: Colors.teal.shade900)),
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 25),
-                        child: Text(
-                          'Product Type (Veg/Non-veg,/in case if applicable)',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 25),
+
+                          child: Row(
+                            children: [
+                              Text(
+                                'Product Description',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text("*",style: TextStyle(color: Colors.red)),
+                            ],
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: DropdownButton(
-                          value: productType,
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          items: items2.map((String items2) {
-                            return DropdownMenuItem(
-                              value: items2,
-                              child: Text(items2),
-                            );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              productType = newValue!;
-                            });
-                          },
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 20),
-                        child: Text(
-                          'Product Name',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
+                        Container(
+                          margin:
+                          EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                          child: TextFormField(
+                            onChanged: (value) {
+
+                              productDescription = value;
+                              // setState(() {
+                              //
+                              //   _formkey.currentState?.validate();
+                              // });
+                            },
+                            // validator: (productDescription){
+                            //   if(productDescription!.isEmpty || productDescription.length < 2){
+                            //     return 'Please enter Product Description';
+                            //   }
+                            //   return null;
+                            // },
+                            controller: productDescriptionContt,
+                            style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
+                            decoration: InputDecoration(
+                              errorText:
+                              _validate2 ? 'Value Can\'t Be Empty' : null,
+                              hintText: 'Write here about product',
+                              focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                  BorderSide(color: Colors.teal.shade900)),
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          onChanged: (value) {
-                            productName = value;
-                          },
-                          controller: productNameContt,
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 15),
-                          decoration: InputDecoration(
-                            errorText:
-                            _validate1 ? 'Value Can\'t Be Empty' : null,
-                            hintText: 'Name of item (Ex-Oil)',
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.teal.shade900)),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20, top: 25),
+
+                          child: Row(
+                            children: [
+                              Text(
+                                'Select Quantity/price',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text("*",style: TextStyle(color: Colors.red)),
+                            ],
                           ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 25),
-                        child: Text(
-                          'Product Description',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
+                        PriceQuantitySpinnerRow(
+                            options: itemOptions,
+                            onOptionAdded: handleOptionAdded,
+                            updateInitialValue:
+                                (pControllers, oController, qController) {}),
+                        Container(
+                          width: double.maxFinite,
+                          margin: EdgeInsets.only(
+                              left: 20, right: 20, bottom: 40, top: 20),
+                          child: MaterialButton(
+                            onPressed: () {
+                       if (productName.isEmpty ||
+                        productDescription.isEmpty) {
+                        setState(() {
+                        productName.isEmpty
+                         ? _validate1 = true
+                          : _validate1 = false;
+                         productDescription.isEmpty
+                         ? _validate2 = true
+                         : _validate1 = false;
+                           });
+                          }
+                      // if(_formkey.currentState!.validate() ){
+                      //  print('success');
+                      //   Navigator.push(
+                      //     context,
+                      //    MaterialPageRoute(
+                      //      builder: (context) => ReviewListed(
+                      //        token: widget.token,
+                      //        id: widget.id,
+                      //        itemOptions: itemOptions,
+                      //        productName: productName,
+                      //        imageFileList: imageFileList,
+                      //        productType: productType,
+                      //        description: productDescription,
+                      //        category: widget.category,
+                      //        subCategory1: widget.subCategory1,
+                      //        subCategory2: widget.subCategory2,
+                      //         ),
+                      //        ));
+                      //        }
+
+                              else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ReviewListed(
+                                        token: widget.token,
+                                        id: widget.id,
+                                        itemOptions: itemOptions,
+                                        productName: productName,
+                                        imageFileList: imageFileList,
+                                        productType: productType,
+                                        description: productDescription,
+                                        category: widget.category,
+                                        subCategory1: widget.subCategory1,
+                                        subCategory2: widget.subCategory2,
+                                      ),
+                                    ));
+                              }
+                            },
+                            child: Text(
+                              'Save And Continue',
+                              style: TextStyle(color: Colors.white, fontSize: 15),
+                            ),
+                            color: Colors.lightBlue.shade500,
+                            height: 40,
                           ),
                         ),
-                      ),
-                      Container(
-                        margin:
-                        EdgeInsets.only(left: 20, right: 20, bottom: 10),
-                        child: TextField(
-                          onChanged: (value) {
-                            productDescription = value;
-                          },
-                          controller: productDescriptionContt,
-                          style: TextStyle(fontFamily: 'Poppins', fontSize: 16),
-                          decoration: InputDecoration(
-                            errorText:
-                            _validate2 ? 'Value Can\'t Be Empty' : null,
-                            hintText: 'Write here about product',
-                            focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.teal.shade900)),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(left: 20, right: 20, top: 25),
-                        child: Text(
-                          'Select Quantity/price',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontFamily: 'Poppins',
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      PriceQuantitySpinnerRow(
-                          options: itemOptions,
-                          onOptionAdded: handleOptionAdded,
-                          updateInitialValue:
-                              (pControllers, oController, qController) {}),
-                      Container(
-                        width: double.maxFinite,
-                        margin: EdgeInsets.only(
-                            left: 20, right: 20, bottom: 40, top: 20),
-                        child: MaterialButton(
-                          onPressed: () {
-                            if (productName.isEmpty ||
-                                productDescription.isEmpty) {
-                              setState(() {
-                                productName.isEmpty
-                                    ? _validate1 = true
-                                    : _validate1 = false;
-                                productDescription.isEmpty
-                                    ? _validate2 = true
-                                    : _validate1 = false;
-                              });
-                            } else {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReviewListed(
-                                      token: widget.token,
-                                      id: widget.id,
-                                      itemOptions: itemOptions,
-                                      productName: productName,
-                                      imageFileList: imageFileList,
-                                      productType: productType,
-                                      description: productDescription,
-                                      category: widget.category,
-                                      subCategory1: widget.subCategory1,
-                                      subCategory2: widget.subCategory2,
-                                    ),
-                                  ));
-                            }
-                          },
-                          child: Text(
-                            'Save And Continue',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
-                          color: Colors.lightBlue.shade500,
-                          height: 40,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
